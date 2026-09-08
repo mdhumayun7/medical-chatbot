@@ -1,13 +1,11 @@
-# 🩺 Medical Chatbot using LLMs, LangChain, Pinecone & Ollama
+# Medical Chatbot — RAG over a Medical Knowledge Base
 
 ![Python](https://img.shields.io/badge/Python-3.14-blue)
 ![LangChain](https://img.shields.io/badge/LangChain-RAG-green)
 ![Flask](https://img.shields.io/badge/Flask-WebApp-black)
 ![License](https://img.shields.io/badge/License-MIT-yellow)
 
----
-
-# 📌 Overview
+## Overview
 
 This project implements a complete **Retrieval-Augmented Generation (RAG) based Medical Chatbot** using:
 
@@ -31,33 +29,29 @@ The system performs:
 
 The entire pipeline runs locally using Ollama for privacy-preserving inference.
 
----
+## Features
 
-# 🚀 Features
+- Retrieval-Augmented Generation (RAG)
 
-✅ Retrieval-Augmented Generation (RAG)
+- Semantic Search using Embeddings
 
-✅ Semantic Search using Embeddings
+- Pinecone Vector Database Integration
 
-✅ Pinecone Vector Database Integration
+- Local LLM Inference using Ollama
 
-✅ Local LLM Inference using Ollama
+- Flask-based Web Interface
 
-✅ Flask-based Web Interface
+- Medical PDF Knowledge Base
 
-✅ Medical PDF Knowledge Base
+- Explicit refusal when retrieval returns nothing relevant
 
-✅ Low Hallucination Responses
+- Fully Open Source Stack
 
-✅ Fully Open Source Stack
+- Research-Oriented Architecture
 
-✅ Research-Oriented Architecture
+## System architecture
 
----
-
-# 🏗️ System Architecture
-
-```text
+```
 Medical PDFs
       ↓
 PyPDFLoader
@@ -77,54 +71,38 @@ Llama 3.2 via Ollama
 Flask Chat Interface
 ```
 
----
+## RAG workflow
 
-# 🧠 RAG Workflow
-
-## Offline Phase
+### Offline phase
 
 - Load medical PDFs
 - Split into chunks
 - Generate embeddings
 - Store vectors in Pinecone
 
-## Online Phase
+### Online phase
 
 - User asks query
 - Query embedding generated
 - Similar chunks retrieved
 - Context injected into prompt
-- LLM generates grounded response
+- LLM generates grounded response — **or refuses**, if nothing retrieved clears the grounding bar
 
----
+## Tech stack
 
-# ⚙️ Tech Stack
+| Component       | Technology       |
+| --------------- | ---------------- |
+| LLM             | Llama 3.2        |
+| Embeddings      | nomic-embed-text |
+| Framework       | LangChain        |
+| Vector DB       | Pinecone         |
+| Backend         | Flask            |
+| Language        | Python           |
+| Local Inference | Ollama           |
 
-| Component | Technology |
-|---|---|
-| LLM | Llama 3.2 |
-| Embeddings | nomic-embed-text |
-| Framework | LangChain |
-| Vector DB | Pinecone |
-| Backend | Flask |
-| Language | Python |
-| Local Inference | Ollama |
+## Project structure
 
----
-
-## 📸 Screenshots
-
-### Chat Interface
-![Medical Chatbot UI](screenshots/ui_home.png)
-
-### Real-time RAG Response
-![Chat Demo](screenshots/chat_demo.png)
-
-
-
-# 📂 Project Structure
-
-```bash
+```
 medical-chatbot/
 │
 ├── src/
@@ -138,8 +116,6 @@ medical-chatbot/
 │
 ├── data/
 │
-├── screenshots/
-│
 ├── app.py
 ├── store_index.py
 ├── requirements.txt
@@ -150,29 +126,27 @@ medical-chatbot/
 └── README.md
 ```
 
----
+## Installation
 
-# 🛠️ Installation
-
-## 1️⃣ Clone Repository
+### 1. Clone the repository
 
 ```bash
-git clone https://github.com/YOUR_USERNAME/medical-chatbot-rag-llm.git
-cd medical-chatbot-rag-llm
+git clone https://github.com/mdhumayun7/medical-chatbot.git
+cd medical-chatbot
 ```
 
 ---
 
-## 2️⃣ Create Virtual Environment
+### 2. Create a virtual environment
 
-### Windows
+#### Windows
 
 ```bash
 python -m venv venv
 venv\Scripts\activate
 ```
 
-### Linux / Mac
+#### Linux / Mac
 
 ```bash
 python3 -m venv venv
@@ -181,94 +155,109 @@ source venv/bin/activate
 
 ---
 
-## 3️⃣ Install Dependencies
+### 3. Install dependencies
 
 ```bash
 pip install -r requirements.txt
 ```
 
----
+## Install Ollama models
 
-# 🤖 Install Ollama Models
-
-## Pull Embedding Model
+### Pull the embedding model
 
 ```bash
 ollama pull nomic-embed-text
 ```
 
-## Pull LLM Model
+### Pull the LLM
 
 ```bash
 ollama pull llama3.2
 ```
 
-## Verify Models
+### Verify
 
 ```bash
 ollama list
 ```
 
----
+## Environment variables
 
-# 🔐 Environment Variables
+Create a `.env` file:
 
-Create `.env` file:
-
-```env
+```
 PINECONE_API_KEY=your_api_key_here
 ```
 
----
-
-# 📥 Add Medical PDFs
+## Add medical PDFs
 
 Place all medical PDF files inside:
 
-```bash
+```
 data/
 ```
 
----
+## Create the vector index
 
-# 🗂️ Create Vector Index
-
-Run ingestion pipeline:
+Run the ingestion pipeline:
 
 ```bash
 python store_index.py
 ```
 
----
-
-# ▶️ Run Application
+## Run the application
 
 ```bash
 python app.py
 ```
 
----
+## Open in a browser
 
-# 🌐 Open Browser
-
-```text
+```
 http://localhost:8080
 ```
 
----
+## Docker
 
-# 📊 Results
+### Build the image
 
-| Test Case | Result |
-|---|---|
-| Medical Questions | Accurate grounded answers |
-| Out-of-domain query | Fallback response |
-| Semantic retrieval | Successful |
-| Hallucination control | Improved |
+```bash
+docker build -t medical-chatbot .
+```
 
----
+### Run the container
 
-# 🔬 Key Concepts Used
+```bash
+docker run -p 8080:8080 medical-chatbot
+```
+
+## Pipeline parameters
+
+The values that actually determine how this system behaves:
+
+| Property                | Value                                                        |
+| ----------------------- | ------------------------------------------------------------ |
+| Corpus                  | 1,152 pages of medical reference material                     |
+| Chunking                | 500 characters, overlapping                                   |
+| Retrieval               | top-3, cosine similarity                                      |
+| Embedding dimension     | 768 (`nomic-embed-text`)                                      |
+| Generation temperature  | 0.4                                                           |
+| Out-of-corpus behaviour | explicit refusal, no fallback to parametric memory            |
+
+Chunk size and overlap are quietly the most consequential parameters here. 500-character overlapping chunks keep enough context inside a single chunk to be self-explanatory, while staying small enough that top-3 retrieval returns focused text rather than three pages of noise.
+
+## The design decision that matters
+
+Most RAG demos pass retrieved context to the model and hope it uses it. If the
+retriever returns nothing relevant, the model falls back on what it absorbed
+during training and answers anyway — fluently, and wrongly.
+
+Here the prompt chain is **constrained to retrieved context with an explicit
+refusal path**. An out-of-corpus question produces a refusal rather than a
+confident guess. In a medical setting that is the correct output, and it is the
+behaviour this project exists to demonstrate.
+
+## Key concepts
 
 - Retrieval-Augmented Generation (RAG)
 - Vector Embeddings
@@ -278,105 +267,57 @@ http://localhost:8080
 - LLM Orchestration
 - Context Grounding
 
----
+## Limitations and disclaimer
 
-# 🚀 Future Improvements
+**This is not a medical device and does not provide clinical advice.** It is an
+engineering demonstration of grounded retrieval.
 
-- Hybrid Search
-- Conversation Memory
-- Streaming Responses
-- Source Citation UI
-- Docker Deployment
-- FastAPI Migration
-- RAGAS Evaluation
-- Authentication & Security
+- Answer quality is bounded entirely by the ingested corpus. The system cannot
+  answer what the corpus does not contain — which is the intended behaviour, not
+  a shortcoming.
+- Grounding is demonstrated, not benchmarked. There is no evaluation against a
+  labelled question set, so no claim is made about factual accuracy rates.
+- Retrieval is dense-only, so it misses cases where exact lexical overlap
+  matters more than semantic similarity.
+- Single-turn only. There is no conversation memory, so follow-up questions lose
+  the context of what came before.
 
----
+## Future improvements
 
-# 🐳 Docker Support
+- Hybrid search (dense + lexical)
+- Conversation memory
+- Streaming responses
+- Source citation in the UI
+- FastAPI migration
+- RAGAS evaluation against a labelled question set
+- Authentication & security
 
-## Build Docker Image
+## Security notes
 
-```bash
-docker build -t medical-chatbot .
-```
-
-## Run Container
-
-```bash
-docker run -p 8080:8080 medical-chatbot
-```
-
----
-
-# 📸 Screenshots
-
-Add screenshots inside:
-
-```bash
-screenshots/
-```
-
-Example:
-
-- home.png
-- result.png
-- architecture.png
-
----
-
-# 🔐 Security Notes
-
-❌ Never push:
+Never commit:
 
 - `.env`
 - API keys
 - `venv/`
-- secrets
+- any secret
 
----
+## Author
 
-# 👨‍💻 Author
+**MD Humayun**
+M.Tech — Computer Science (Information Security & Privacy), SVNIT Surat
 
-## MD Humayun
+[Portfolio](https://mdhumayun7.github.io/MD-HUMAYUN-PORTFOLIO/) ·
+[GitHub](https://github.com/mdhumayun7) ·
+[LinkedIn](https://www.linkedin.com/in/md-humayun-82051521a/)
 
-M.Tech — Computer Science & Engineering  
-SVNIT Surat
+## References
 
----
-
-# 📚 References
-
-1. Retrieval-Augmented Generation (RAG)
+1. Lewis et al., *Retrieval-Augmented Generation for Knowledge-Intensive NLP Tasks* (2020)
 2. LangChain Documentation
 3. Pinecone Documentation
 4. Ollama Documentation
-5. Attention Is All You Need
+5. Vaswani et al., *Attention Is All You Need* (2017)
 
----
-
-# ⭐ GitHub Topics
-
-```text
-rag
-llm
-langchain
-pinecone
-ollama
-medical-chatbot
-flask
-machine-learning
-nlp
-generative-ai
-python
-```
-
----
-
-# 📄 License
+## License
 
 This project is licensed under the MIT License.
-
----
-
-# 🌟 If you found this project useful, give it a star!
